@@ -74,21 +74,24 @@ The app uses `configuration.ini` for settings. Copy `example.configuration.ini` 
 
 ## Building from Source
 
-### Windows
-To build the executable yourself:
-
-1. Install UV:
-   ```powershell
-   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+To build the executable yourself, run `build.sh` using Git Bash (on Windows) or any Bash terminal (on Mac/Linux):
+   ```bash
+   ./build.sh
    ```
-2. Run `build.bat` to:
-   - Create virtual environment and install dependencies
-   - Copy `clips/` and `onboarding/` directories to `dist/`
-   - Copy `example.configuration.ini` as `configuration.ini`
-   - Generate `reacto.exe` inside `dist/` directory
 
-### Mac and Linux
-GitHub Actions workflows are available in the [`.github/workflows/`](.github/workflows/:1) directory for CI and build automation.
+What `build.sh` does:
+- Detects your platform (Windows, Mac, Linux) and sets up platform-specific build steps
+- Installs the `uv` package manager if not already available
+- Pins Python to version 3.10 for consistent builds
+- Creates a virtual environment using `uv venv` if one does not exist
+- Installs platform-specific dependencies (e.g., system libraries, UPX, wxPython)
+- Installs all Python dependencies from `requirements.txt` using `uv pip`
+- Copies the `clips/` and `onboarding/` directories (if present) into a platform-specific `dist/` folder
+- Copies `example.configuration.ini` as `configuration.ini` and `README.md` into the `dist/` folder
+- Selects the correct icon format for your platform
+- Runs PyInstaller with many hidden imports and excluded modules to generate a standalone executable in the appropriate `dist/` subfolder
+
+GitHub Actions workflows are also available in the [`.github/workflows/`](.github/workflows/:1) directory for CI and build automation.
 
 ## Credits and Thanks
 
