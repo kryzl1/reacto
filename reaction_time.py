@@ -26,11 +26,17 @@ def get_reaction_time(win: Window, movie: MovieStim, sound: Sound, stimulus_fram
 
     frame_text = TextStim(win, text='Frame: 0', pos=(0.8, 0.9), color='white', height=0.05)
     
-    # Line 1298 of psychopy\visual\movies\__init__.py
-    # has a bug that makes movie.frameRate not work
-    # replace `return self._player.metadata.frameRate`
-    # with `return self._player._metadata.frameRate`
-    framerate = (movie.frameRate if (movie.frameRate is not None) else framerate)
+    """
+        Line 1298 of psychopy\visual\movies\__init__.py
+        has a bug that makes movie.frameRate not work
+        
+        replace `return self._player.metadata.frameRate`
+        with `return self._player._metadata.frameRate`
+    """
+    try:
+        framerate = movie.frameRate
+    except:
+        framerate = framerate
     stimulus_time = stimulus_frame / framerate
 
     # Reset mouse for reaction measurement
