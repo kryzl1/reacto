@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from psychopy import event
 from psychopy.visual import ImageStim, Window, TextStim
@@ -18,7 +17,8 @@ def press_space_to_continue(win: Window):
     event.waitKeys(keyList=['space'])
 
 def draw_mouse_click(win: Window):
-    mouse_image_path = os.path.join('onboarding', 'mouse-left-button-svgrepo-com.png')
+    base_path = get_base_path()
+    mouse_image_path = base_path / Path('onboarding', 'mouse-left-button-svgrepo-com.png')
     mouse_image = ImageStim(win, image=mouse_image_path, units='pix', size=(512, 512), pos=(0, -0.5), color=('grey'), opacity=0.33)
     mouse_image.draw()
 
@@ -40,8 +40,7 @@ def explain_reacto(win: Window):
     press_space_to_continue(win)
 
 def show_image_stim_examples(win: Window):
-    pngs = load_images('onboarding')
-    images = [ImageStim(win, image=png) for png in pngs.values()]
+    images = load_images(win, Path('onboarding'))
     descriptions = [
         "Reacting before the stimulus appears is too early.",
         "Reacting after the clip ends is too late.",

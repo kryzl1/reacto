@@ -3,7 +3,7 @@ import os
 import random
 from pathlib import Path
 
-from psychopy.visual import Window, TextStim
+from psychopy.visual import Window, TextStim, ImageStim
 from psychopy.visual.movie import MovieStim
 from psychopy.sound import Sound
 
@@ -51,15 +51,12 @@ def load_clips(win: Window, dir: Path, randomize: bool=False):
     if randomize: random.shuffle(clips)
     return clips, movies, sounds
 
-def load_images(dir: str):
-    if hasattr(sys, 'frozen'):
-        base_path = Path(sys.executable).parent
-    else:
-        base_path = Path(__file__).parent
-    images_dir = os.path.join(base_path, dir)
-    return {f.stem: f for f in Path(images_dir).glob("*.png")}
+def load_images(win: Window, dir: Path):
+    base_path = get_base_path()
+    images_dir = base_path / dir
+    return [ImageStim(win, image=f) for f in images_dir.glob("*.png")]
 
 if __name__ == "__main__":
     win = Window()
-    clips_dir = 'clips'
-    clips = load_clips(win, clips_dir)
+    clips = load_clips(win, Path('clips'))
+    images = load_images(win, Path('onboarding'))
