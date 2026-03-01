@@ -16,13 +16,13 @@ def press_space_to_continue(win: Window):
     win.flip()
     event.waitKeys(keyList=['space'])
 
-def draw_mouse_click(win: Window):
-    mouse_image_path = base_path / Path('onboarding', 'mouse-left-button-svgrepo-com.png')
-    mouse_image = ImageStim(win, image=mouse_image_path, units='pix', size=(512, 512), pos=(0, -0.5), color=('grey'), opacity=0.33)
-    mouse_image.draw()
+def draw_image(win: Window, filename: str, color: str, opacity=0.33):
+    png = base_path / Path('onboarding', filename)
+    image = ImageStim(win, image=png, units='pix', size=(512, 512), color=(color), opacity=opacity)
+    image.draw()
 
 def explain_reacto(win: Window):
-    draw_mouse_click(win)
+    draw_image(win, 'mouse-left-button-svgrepo-com.png', 'grey')
 
     # Display the welcome text in a larger font size
     welcome_message = TextStim(win, text="Welcome to Reacto!", height=0.1, pos=(0, 0.2))
@@ -41,9 +41,9 @@ def explain_reacto(win: Window):
 def show_image_stim_examples(win: Window):
     images = load_images(win, Path('onboarding'))
     descriptions = [
-        "Reacting before the stimulus appears is too early.",
+        "Reacting before the head is fully visible is too early.",
         "Reacting after the clip ends is too late.",
-        "Reacting within the optimal window is just right."
+        "Reacting when the head is fully visible is just right."
     ]
 
     for i, description in enumerate(descriptions):
@@ -63,6 +63,10 @@ def show_image_stim_examples(win: Window):
             color='white')
 
         images[i].draw()
+        if i == 2:
+            draw_image(win, "checkmark-circle-svgrepo-com", "green", 0.5)
+        else:
+            draw_image(win, "cross-circle-svgrepo-com.png", "red", 0.5)
         shadow_message.draw()
         main_message.draw()
         press_space_to_continue(win)
@@ -73,7 +77,7 @@ def explain_countdown(win: Window):
         "When it reaches zero, the stimulus will appear.\n"
         "Focus during the countdown and be ready to react."
     ), height=0.05)
-    draw_mouse_click(win)
+    draw_image(win, 'mouse-left-button-svgrepo-com.png', 'grey')
     message.draw()
     press_space_to_continue(win)
 

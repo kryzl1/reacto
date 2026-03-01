@@ -55,7 +55,9 @@ def load_clips(win: Window, dir: Path, randomize: bool=False):
 
 def load_images(win: Window, dir: Path):
     images_dir = base_path / dir
-    return [ImageStim(win, image=f, units="pix", size=win.size) for f in images_dir.glob("*.jpg")]
+    images = [f for f in images_dir.glob("*.jpg")]
+    images.sort()
+    return [ImageStim(win, image=f, units="pix", size=win.size) for f in images]
 
 if __name__ == "__main__":
     win = Window()
