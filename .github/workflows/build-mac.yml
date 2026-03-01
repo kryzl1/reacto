@@ -105,8 +105,11 @@ jobs:
           [ -f "example.configuration.ini" ] && cp example.configuration.ini dist/configuration.ini || true
           [ -f "README.md" ] && cp README.md dist/README.md || true
 
+      - name: Zip dist
+        run: zip -r reacto-mac.zip -j dist/
+        
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: reacto-mac
-          path: dist/
+          path: reacto-mac.zip

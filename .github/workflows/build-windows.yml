@@ -115,8 +115,11 @@ jobs:
             Copy-Item "README.md" "dist\README.md"
           }
 
+      - name: Zip dist
+        run: Compress-Archive -Path dist\* -DestinationPath reacto-windows.zip
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: reacto-windows
-          path: dist/
+          path: reacto-windows.zip
