@@ -16,6 +16,7 @@ else
     exit 1
 fi
 
+echo "Building for $OSTYPE..."
 DIST_DIR="dist/$PLATFORM"
 
 # Install uv if not available
@@ -60,27 +61,11 @@ uv pip install -r requirements.txt
 # Remove old dist
 rm -rf "$DIST_DIR"
 
-# Copy assets if they exist
-for dir in clips onboarding; do
-    if [ -d "$dir" ]; then
-        mkdir -p "$DIST_DIR/$dir"
-        cp -r "$dir/"* "$DIST_DIR/$dir/"
-    fi
-done
-
-if [ -f "example.configuration.ini" ]; then
-    cp example.configuration.ini "$DIST_DIR/configuration.ini"
-fi
-
-if [ -f "README.md" ]; then
-    cp README.md "$DIST_DIR/README.md"
-fi
-
 # Choose icon file
 if [[ "$PLATFORM" == "mac" ]]; then ICON="reacto.icns"; else ICON="reacto.ico"; fi
 
 # Build executable with PyInstaller
-uv run pyinstaller --distpath "$DIST_DIR" --onefile --clean --name reacto --icon "$ICON" \
+uv run pyinstaller --distpath "$DIST_DIR" --onedir --clean --name reacto --icon "$ICON" \
     --hidden-import psychopy.visual.backends.pygletbackend \
     --hidden-import psychopy.visual.movies \
     --hidden-import psychopy.sound.backend_ptb \
@@ -151,3 +136,19 @@ uv run pyinstaller --distpath "$DIST_DIR" --onefile --clean --name reacto --icon
     --exclude-module zope-event \
     --exclude-module zope-interface \
     main.py
+
+# Copy assets if they exist
+for dir in clips onboarding; do
+    if [ -d "$dir" ]; then
+        mkdir -p "$DIST_DIR/reacto/$dir"
+        cp -r "$dir/"* "$DIST_DIR/reacto/$dir/"
+    fi
+done
+
+if [ -f "example.configuration.ini" ]; then
+    cp example.configuration.ini "$DIST_DIR/reacto/configuration.ini"
+fi
+
+if [ -f "README.md" ]; then
+    cp README.md "$DIST_DIR/reacto/README.md"
+fi
